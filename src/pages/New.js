@@ -1,7 +1,8 @@
+import DiaryEditor from "../components/editor";
+
 const New = () => {
     return <div>
-        <h1>New</h1>
-        <p>이곳은 New</p>
+        <DiaryEditor />
     </div>
 }
 

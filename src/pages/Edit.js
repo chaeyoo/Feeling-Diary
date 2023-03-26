@@ -1,25 +1,31 @@
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {useContext, useEffect, useState} from "react";
+import {DiaryStateContext} from "../App";
+import DiaryEditor from "../components/editor";
 
 const Edit = () => {
+    const diaryList = useContext(DiaryStateContext);
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const id = searchParams.get("id");
-    const mode = searchParams.get("mode");
-    console.log("id: " + id);
-    console.log("mode: " + mode);
+    const {id} = useParams();
+    const [originData, setOriginData] = useState();
+    console.log(diaryList);
+    console.log(id);
+
+    useEffect(() => {
+        if (diaryList.length > 0) {
+            const trgtDiary = diaryList.find((el) => parseInt(el.id) === parseInt(id))
+            console.log(trgtDiary);
+            if (trgtDiary) {
+                setOriginData(trgtDiary);
+            } else {
+                navigate('/', {replace: true});
+            }
+        }
+    }, [id, diaryList]);
     return <div>
-        <h1>Edit</h1>
-        <p>이곳은 Edit</p>
-        <button onClick={() => {
-            navigate("/")
-        }}>
-            Home으로가기
-        </button>
-        <button onClick={() => {
-            navigate(-1)
-        }}>
-            뒤로가기
-        </button>
+        <div>
+            {originData && <DiaryEditor isEdit={true} originData={originData} />}
+        </div>
     </div>
 }
 
