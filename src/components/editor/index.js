@@ -1,4 +1,4 @@
-import {useContext, useEffect, useRef, useState} from "react";
+import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import PageHeader from "../pageHeader";
 import CustomButton from "../customButton";
@@ -14,10 +14,10 @@ const DiaryEditor = (props) => {
     const [date, setDate] = useState(getStringDate(new Date()));
     const [emotion, setEmotion] = useState(3);
     const [content, setContent] = useState("")
-    const handleClickEmotion = (emtion) => {
-        setEmotion(emtion);
-    }
-    const { onCreate, onEdit } = useContext(DiaryDispatchContext);
+    const handleClickEmotion = useCallback((emtion) => {
+        setEmotion(emtion)
+    }, []);
+    const { onCreate, onEdit, onRemove } = useContext(DiaryDispatchContext);
     const handleSubmit = () => {
         if (content.length < 1) {
             contentRef.current.focus();
@@ -36,6 +36,12 @@ const DiaryEditor = (props) => {
 
     }
 
+    const handleRemove = () => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+            onRemove(originData.id);
+            navigate("/", {replace: true});
+        }
+    }
     useEffect(() => {
         if(isEdit) {
             setDate(getStringDate(new Date(parseInt(originData.date))));
@@ -48,6 +54,11 @@ const DiaryEditor = (props) => {
                     leftChild={<CustomButton
                         btnNm={"< 뒤로가기"}
                         onClick={() => navigate(-1)}
+                    />}
+                    rightChild={<CustomButton
+                        btnNm={"삭제하기"}
+                        type={"negative"}
+                        onClick={handleRemove}
                     />}
         />
         <section>

@@ -1,3 +1,5 @@
+import React from "react";
+
 const EmotionItem = (props) => {
     const {emotion_id, emotion_img, emotion_description, onClick, isSelected} = props;
     return <div onClick={() => onClick(emotion_id)} className={["EmotionItem",
@@ -7,4 +9,4 @@ const EmotionItem = (props) => {
     </div>
 };
 
-export default EmotionItem;
+export default React.memo(EmotionItem);

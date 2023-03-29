@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import CustomButton from "../customButton";
 import {useNavigate} from "react-router-dom";
 import DiaryItem from "./item";
@@ -15,12 +15,12 @@ const DiaryList = (props) => {
         {value: "good", name: "좋은 감정만"},
         {value: "bad", name: "나쁜 감정만"},
     ]
-    const ControlMenu = (props) => {
+    const ControlMenu = React.memo((props) => {
          const { value, onChange, optionList } = props;
         return <select className="ControlMenu" value={value} onChange={(e) => onChange(e.target.value)}>
             {optionList.map((el, idx) => <option key={idx} value={el.value}>{el.name}</option>)}
         </select>
-    }
+    });
     const { diaryList } = props;
     const [sortType, setSortType] = useState("latest");
     const [filter, setFilter] = useState("all");
